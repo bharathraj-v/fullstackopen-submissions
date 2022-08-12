@@ -10,12 +10,16 @@ const App = () => {
     'Debugging is twice as hard as writing the code in the first place. Therefore, if you write the code as cleverly as possible, you are, by definition, not smart enough to debug it.',
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.'
   ]
-  const scores = [0,0,0,0,0,0,0]
+
   const [selected, setSelected] = useState(0)
-  const [score, setScore] = useState(scores)
+  const [score, setScore] = useState([0,0,0,0,0,0,0])
 
   const handleNext = () => {
-    setSelected(Math.floor(Math.random()*7))
+    let newSelected = selected
+    while (newSelected === selected){
+      newSelected= Math.floor(Math.random()*anecdotes.length)
+    }
+    setSelected(newSelected)
   }
   
 
