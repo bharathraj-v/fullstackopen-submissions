@@ -17,23 +17,22 @@ const Display = ({countries, search, setSearch}) => {
   return filtered.length >1 || filtered.length === 0?
   filtered.map(
     country=> 
-    <li key={filtered.indexOf(country)}> 
-    {country.name.common}
+    <p key={filtered.indexOf(country)}> 
+    {country.name.common+"\t"}
     <button onClick = {()=>setSearch(country.name.common)}>show</button>
-    </li>
+    </p>
     )
   : <DisplayCountryData country={filtered[0]}/>
 }
 
 const DisplayCountryData = ({country}) => {
-  console.log(country.flags.png)
   return (
     <div>
     <h1>{country.name.common}</h1>
-    <li>capital {country.capital[0]}</li>
-    <li>area {country.area}</li>
+    <li>Capital: {country.capital[0]}</li>
+    <li>Area: {country.area}</li>
     <p/>
-    <b>languages:</b>
+    <b>Languages:</b>
     <ul>
     {Object.values(country.languages).map(
       language => <li key={Object.values(country.languages).indexOf(language)}>{language}</li>)}
