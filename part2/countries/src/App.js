@@ -2,7 +2,7 @@ import { useEffect, useState} from 'react'
 import axios from 'axios'
 
 
-const Filter=({filterVal, onChange}) => {
+const Filter = ({filterVal, onChange}) => {
   return (
     <>
     find countries <input value={filterVal} onChange={onChange}/>
@@ -10,16 +10,38 @@ const Filter=({filterVal, onChange}) => {
   )
 }
 
-const Display = ({countries, search}) => {
-  const filtered = []
-  countries.map(country => country.name.common.toLowerCase().startsWith(search.toLowerCase()) ? filtered.push(country.name.common):console.log("Filtered"))
-  
-  return filtered.length > 1 ? 
-  filtered.map(country=> <p key={filtered.indexOf(country)}> {country}</p>) 
-  : displayCountryData
-  // return countryDisplay()
+
+
+const Display = ({countries, search, setSearch}) => {
+  const filtered = countries.filter(country => country.name.common.toLowerCase().startsWith(search.toLowerCase()))
+  return filtered.length >1 || filtered.length === 0?
+  filtered.map(
+    country=> 
+    <li key={filtered.indexOf(country)}> 
+    {country.name.common}
+    <button onClick = {()=>setSearch(country.name.common)}>show</button>
+    </li>
+    )
+  : <DisplayCountryData country={filtered[0]}/>
 }
 
+const DisplayCountryData = ({country}) => {
+  console.log(country.flags.png)
+  return (
+    <div>
+    <h1>{country.name.common}</h1>
+    <li>capital {country.capital[0]}</li>
+    <li>area {country.area}</li>
+    <p/>
+    <b>languages:</b>
+    <ul>
+    {Object.values(country.languages).map(
+      language => <li key={Object.values(country.languages).indexOf(language)}>{language}</li>)}
+    </ul>
+    <img src={country.flags.png}/>
+    </div>
+  )
+}
 
 
 const App = () => {
@@ -39,7 +61,7 @@ const App = () => {
   return (
   <>
   <Filter filterVal={search} onChange={handleSearchChange}/>
-  <Display countries={countries} search={search}/>
+  <Display countries={countries} search={search} setSearch={setSearch}/>
   </>
   )
 
