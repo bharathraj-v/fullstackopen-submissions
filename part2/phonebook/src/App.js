@@ -55,11 +55,35 @@ const PersonForm = ({addNumber, newName, newNumber, onNameChange, onNumberChange
   )
 }
 
+const Notification = ({ message }) => {
+  const notificationStyle = {
+    color: 'green',
+    background: 'lightgrey',
+    fontSize: '20px',
+    borderStyle: 'solid',
+    borderRadius: '5px',
+    padding: '10px',
+    marginBottom: '10px'
+  }
+
+  
+  if (message == null) {
+    return null
+  }
+  return (
+    <div style={notificationStyle}>
+      {message}
+    </div>
+  )
+}
+
+
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filterVal, setFilterVal] = useState('')
+  const [addedMessage, setAddedMessage] = useState(null)
   
   useEffect(() => {personServices.getAll()
     .then(response=>{setPersons(response)})}, [])
@@ -69,8 +93,15 @@ const App = () => {
     persons.includes(newName) ? 
     window.alert(`${newName} is already added to phonebook`)
     :
+    console.log(persons.length)
     personServices.create({name: newName, number:newNumber, delete:false, id:persons.length+1})
     .then(response => {
+      setAddedMessage(
+        `${newName} has been added!`
+      )
+      setTimeout(() => {
+        setAddedMessage(null)
+      }, 5000)
       setPersons(persons.concat(response))
       setNewName("")
     })
@@ -83,6 +114,7 @@ const App = () => {
 
   return (
     <div>
+      <Notification message={addedMessage}/>
       <h2>Phonebook</h2>
       <Filter 
       filterVal={filterVal} 

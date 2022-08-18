@@ -3,7 +3,7 @@
     {
       "name": "hasan piker",
       "number": "1111",
-      "delete": false,
+      "delete": true,
       "id": 1
     },
     {
@@ -51,7 +51,7 @@
     {
       "name": "Bharath Raj",
       "number": "2121212",
-      "delete": false,
+      "delete": true,
       "id": 9
     },
     {
@@ -71,6 +71,48 @@
       "number": "11111",
       "delete": true,
       "id": 12
+    },
+    {
+      "name": "sds",
+      "number": "aa",
+      "delete": false,
+      "id": 13
+    },
+    {
+      "name": "asdadss",
+      "number": "fasfjkas",
+      "delete": false,
+      "id": 14
+    },
+    {
+      "name": "asasa",
+      "number": "fasfjkas",
+      "delete": false,
+      "id": 15
+    },
+    {
+      "name": "asfaegdsg",
+      "number": "gdsgfdsgsd",
+      "delete": false,
+      "id": 16
+    },
+    {
+      "name": "sdasda",
+      "number": "gdsgfdsgsd",
+      "delete": false,
+      "id": 17
+    },
+    {
+      "name": "asgm",
+      "number": "gdsgfdsgsd",
+      "delete": false,
+      "id": 18
+    },
+    {
+      "name": "asfdgsgdhh",
+      "number": "gdsgfdsgsd",
+      "delete": false,
+      "id": 19
     }
   ]
 }
