@@ -1,28 +1,29 @@
-import axios from 'axios'
 import { useEffect, useState } from 'react'
-
 import personServices from './services/persons'
 
-const DisplayNumbers=({persons, setPersons, filterVal}) => {
+const DisplayNumbers=({persons, filterVal, setPersons}) => {
   const filtered = []
-  
-  const deleteElement = (person) =>  {
-   
-    const newPerson = person
-    newPerson.delete = true
-    window.confirm(`Are you sure you want to delete ${person.name}?`) &&
-    personServices.update(person.id, newPerson)
-    .then(returnedPerson => {
-      setPersons(persons.map(temp => temp.id !== person.id ? temp : returnedPerson))
-    })
 
+  const deleteElement = (person) =>  {
+    const number = person.number
+    if (window.confirm(`Are you sure you want to delete ${person.name}?`)){
+      personServices.remove(number)
+      .then(
+        setPersons(persons.filter(temp => temp.id !== person.id))
+      )
+    }
   }
 
-  persons.map(person=>person.name.toLowerCase().startsWith(filterVal.toLowerCase()) ? filtered.push(person):console.log("Filtered"))
+  persons.map(
+    person=>person.name.toLowerCase().startsWith(filterVal.toLowerCase()) ? 
+    filtered.push(person):console.log("Filtered")
+  )
   return (
     filtered.map(person => 
-      person.delete !==true &&
-    <li key={person.id}>{person.name} {person.number} <button onClick={()=>deleteElement(person)}>delete</button></li>
+    <li key={person.id}>{person.name} {person.number} <button onClick={()=>deleteElement(person)}
+    >delete
+    </button>
+    </li>
   )
   )
 }
@@ -90,27 +91,28 @@ const App = () => {
 
   const addNumber = (event) => {
     event.preventDefault()
-    persons.includes(newName) ? 
-    window.alert(`${newName} is already added to phonebook`)
-    :
-    console.log(persons.length)
-    personServices.create({name: newName, number:newNumber, delete:false, id:persons.length+1})
-    .then(response => {
-      setAddedMessage(
-        `${newName} has been added!`
-      )
-      setTimeout(() => {
-        setAddedMessage(null)
-      }, 5000)
-      setPersons(persons.concat(response))
-      setNewName("")
-    })
-    
+    const newPerson = {
+      name: newName,
+      number: newNumber
+    }
+    setNewNumber('')
+    setNewName('')
+
+
+    if (persons.find(p => p.name === newPerson.name)){
+    window.alert(`${newPerson.name} is already added to phonebook`) 
+    } else {
+      personServices.create(newPerson).then(response => {
+        setAddedMessage(`${newName} has been added!`)
+        setTimeout(() => {setAddedMessage(null)}, 5000)
+        setPersons(persons.concat(response))
+      })
+    }
   }
 
-  const handleNameChange = (event) => setNewName(event.target.value)
-  const handleNumberChange = (event) => setNewNumber(event.target.value)
-  const handleFilterChange = (event) => setFilterVal(event.target.value)
+  const handleNameChange = ({target}) => setNewName(target.value)
+  const handleNumberChange = ({target}) => setNewNumber(target.value)
+  const handleFilterChange = ({target}) => setFilterVal(target.value)
 
   return (
     <div>
